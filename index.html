@@ -37,10 +37,10 @@
   <div class="layout">
 
     <div class="layout-slider" style="width: 100%">
-      Slider <span style="display: inline-block; width: 400px; padding: 0 5px;"><input id="Slider1" type="slider" name="price" value="30000.5;60000" /></span>  in string
+      Slider <span style="display: inline-block; width: 400px; padding: 0 5px;"><input id="Slider1" type="slider" name="price" value="1000;100000" /></span>  in string
     </div>
     <script type="text/javascript" charset="utf-8">
-      jQuery("#Slider1").slider({ from: 1000, to: 100000, step: 500, smooth: true, round: 0, dimension: "&nbsp;$", skin: "plastic" });
+      jQuery("#Slider1").slider({ from: 1000, to: 100000, step: 500, smooth: true, round: 0, dimension: "&nbsp;$", skin: "plastic", fromText:'start', toText:'No limit'});
     </script>
 
     <div class="layout-slider-settings">
@@ -49,6 +49,8 @@
   to: 50,
   step: 2.5,
   round: 1,
+  fromText:'start', 
+  toText:'No limit',
   format: { format: '##.0', locale: 'de' },
   dimension: '&amp;nbsp;€'
 }</pre>

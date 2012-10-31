@@ -160,7 +160,9 @@
       round: 0,
       format: { format: "#,##0.##" },
       value: "5;7",
-      dimension: ""
+      dimension: "",
+      fromText:this.from,
+      toText:this.to
     },
     
     className: "jslider",
@@ -177,8 +179,8 @@
           '<div class="<%=className%>-pointer"></div>' +
           '<div class="<%=className%>-pointer <%=className%>-pointer-to"></div>' +
         
-          '<div class="<%=className%>-label"><span><%=settings.from%></span></div>' +
-          '<div class="<%=className%>-label <%=className%>-label-to"><span><%=settings.to%></span><%=settings.dimension%></div>' +
+          '<div class="<%=className%>-label"><span><%=settings.fromText%></span><%=settings.dimension%></div>' +
+          '<div class="<%=className%>-label <%=className%>-label-to"><span><%=settings.toText%></span><%=settings.dimension%></div>' +
 
           '<div class="<%=className%>-value"><span></span><%=settings.dimension%></div>' +
           '<div class="<%=className%>-value <%=className%>-value-to"><span></span><%=settings.dimension%></div>' +
@@ -230,7 +232,9 @@
       settings: {
         from: this.nice( this.settings.from ),
         to: this.nice( this.settings.to ),
-        dimension: this.settings.dimension
+        dimension: this.settings.dimension,
+        fromText:this.settings.fromText || this.settings.from,
+        toText:this.settings.toText || this.settings.to
       },
       scale: this.generateScale()
     }) );
@@ -392,12 +396,21 @@
     if( this.o.pointers[0] && this.o.pointers[1] )
       this.o.value.css({ left: this.o.pointers[0].value.prc + "%", width: ( this.o.pointers[1].value.prc - this.o.pointers[0].value.prc ) + "%" });
 
-    this.o.labels[pointer.uid].value.html(
+
+console.log(this.o.pointers[0].value.prc, this.o.pointers[1].value.prc, pointer.uid, this)
+
+if (pointer.uid == 0 && this.o.pointers[0].value.prc == 0 && this.settings.fromText) { 
+  this.o.labels[pointer.uid].value.html(this.settings.fromText);
+} else if (pointer.uid == 1 && this.o.pointers[1].value.prc == 100 && this.settings.toText) {
+  this.o.labels[pointer.uid].value.html(this.settings.toText);
+} else {
+  this.o.labels[pointer.uid].value.html(
       this.nice(
         pointer.value.origin
       )
     );
-    
+}
+
     // redraw position of labels
     this.redrawLabels( pointer );
 
@@ -410,8 +423,9 @@
 
       // left limit
       label_left = sizes.border + sizes.margin;
-      if( label_left < 0 )
+      if( label_left < 0 ) {
         sizes.margin -= label_left;
+      }
 
       // right limit
       if( sizes.border+sizes.label / 2 > self.sizes.domWidth ){
@@ -480,7 +494,7 @@
     }
 
     sizes = setPosition( label, sizes, prc );
-    
+
     /* draw second label */
     if( another_label ){
       var sizes = {
